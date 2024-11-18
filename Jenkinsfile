@@ -2,27 +2,23 @@ pipeline{
     agent any
 
     environment{
-        NODE_VERIONS = '22.x'
+        NODE_VERSIONS = '22.x'
     }
 
     tools{
-        nodejs '${NODE_VERIONS}'
+        nodejs '${NODE_VERSIONS}'
     }
 
     stages{
         stage('Checkout'){
             steps{
-                checkout scm
+                git branch: 'main', url: 'https://github.com/DBakalski/StudentRegistryAppD'
             }
         }
         stage(Ïnstall dependancies){
             steps{
                 script{
-                    if(isUnix()){
-                        sh 'npm install'
-                    }
-                    else{
-                        sh 'npm install'
+                    bat 'npm install'
                     }
                 }
             }
@@ -32,9 +28,9 @@ pipeline{
         stage('start Aplication and run test'){
             steps{
                 script{
-                    sh 'npm start &'
-                    sh 'wait-on http://localhost:8090'
-                    sh 'npm test'
+                    bat 'npm start &'
+                    bat 'wait-on http://localhost:8090'
+                    bat 'npm test'
                 }
             }
         }

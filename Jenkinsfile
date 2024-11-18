@@ -1,37 +1,33 @@
-pipeline{
+pipeline {
     agent any
     
-     stages{
-        stage('Checkout'){
-            steps{
+    stages {
+        stage('Checkout') {
+            steps {
                 git branch: 'main', url: 'https://github.com/DBakalski/StudentRegistryAppD'
             }
         }
-        stage(Ïnstall dependancies){
-            steps{
-                script{
+        stage('Install dependencies') {
+            steps {
+                script {
                     bat 'npm install'
-                    }
                 }
             }
-
         }
-
-        stage('start Aplication and run test'){
-            steps{
-                script{
-                    bat 'npm start &'
-                    bat 'wait-on http://localhost:8090'
-                    bat 'npm test'
+        stage('Start Application and Run Tests') {
+            steps {
+                script {
+                    bat 'npm start &'               // Starts the application in the background
+                    bat 'wait-on http://localhost:8090'  // Waits until the application is accessible
+                    bat 'npm test'                 // Runs the tests
                 }
             }
         }
     }
-
+    
     post {
-        always{
+        always {
             echo "CI pipeline completed"
         }
-
     }
 }
